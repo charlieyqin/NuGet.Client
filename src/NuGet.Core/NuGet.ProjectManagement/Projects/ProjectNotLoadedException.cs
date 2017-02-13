@@ -9,7 +9,8 @@ namespace NuGet.ProjectManagement.Projects
     /// An exception that indicates the project has not been loaded. For example, in the case of CPS-based
     /// ProjectReference projects, this can mean that project has not been nominated yet.
     /// </summary>
-    public class ProjectNotLoadedException : InvalidOperationException
+    [Serializable]
+    public sealed class ProjectNotLoadedException : Exception
     {
         public ProjectNotLoadedException(string message) : base(message)
         {

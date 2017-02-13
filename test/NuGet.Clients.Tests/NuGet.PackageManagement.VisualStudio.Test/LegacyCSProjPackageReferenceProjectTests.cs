@@ -1,6 +1,10 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.Shell;
 using Moq;
 using NuGet.Frameworks;
@@ -8,10 +12,6 @@ using NuGet.ProjectManagement;
 using NuGet.RuntimeModel;
 using NuGet.Test.Utility;
 using NuGet.Versioning;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Xunit;
 using Task = System.Threading.Tasks.Task;
 
@@ -46,7 +46,7 @@ namespace NuGet.PackageManagement.VisualStudio.Test
         }
 
         [Fact]
-        public async Task LCPRP_ThrowsUnavailableExceptionWhenThereIsNoBaseIntermediateOutputPath()
+        public async Task LCPRP_WhenThereIsNoBaseIntermediateOutputPath_ThrowsException()
         {
             // Arrange
             using (var randomTestFolder = TestDirectory.Create())
