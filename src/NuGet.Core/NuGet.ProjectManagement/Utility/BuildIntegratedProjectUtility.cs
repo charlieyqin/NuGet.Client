@@ -41,16 +41,13 @@ namespace NuGet.ProjectManagement
         /// </summary>
         public static async Task<LockFile> GetLockFileOrNull(BuildIntegratedNuGetProject buildIntegratedProject)
         {
-            string lockFilePath;
-            try
-            {
-                lockFilePath = await buildIntegratedProject.GetAssetsFilePathAsync();
-            }
-            catch (ProjectNotLoadedException)
+            var lockFilePath = await buildIntegratedProject.GetAssetsFilePathOrNullAsync();
+            
+            if (lockFilePath == null)
             {
                 return null;
             }
-            
+
             return GetLockFileOrNull(lockFilePath);
         }
 
