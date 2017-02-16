@@ -35,11 +35,15 @@ namespace NuGet.ProjectManagement.Projects
         public abstract string MSBuildProjectPath { get; }
 
         /// <summary>
-        /// Returns the path to the assets file or the lock file. Throws an exception if the assets fil path cannot be
+        /// Returns the path to the assets file or the lock file. Throws an exception if the assets file path cannot be
         /// determined.
         /// </summary>
         public abstract Task<string> GetAssetsFilePathAsync();
 
+        /// <summary>
+        /// Returns the path to the assets file or the lock file. Returns null if the assets file path cannot be
+        /// determined.
+        /// </summary>
         public abstract Task<string> GetAssetsFilePathOrNullAsync();
 
         public abstract Task<IReadOnlyList<PackageSpec>> GetPackageSpecsAsync(DependencyGraphCacheContext context);
