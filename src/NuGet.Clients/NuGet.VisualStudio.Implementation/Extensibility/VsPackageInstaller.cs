@@ -31,9 +31,9 @@ namespace NuGet.VisualStudio
         private readonly ISourceRepositoryProvider _sourceRepositoryProvider;
         private readonly Configuration.ISettings _settings;
         private readonly IVsSolutionManager _solutionManager;
-        private readonly INuGetProjectContext _projectContext;
         private readonly IVsPackageInstallerServices _packageServices;
         private readonly IDeleteOnRestartManager _deleteOnRestartManager;
+        private INuGetProjectContext ProjectContext;
 
         private JoinableTaskFactory PumpingJTF { get; }
 
@@ -48,7 +48,6 @@ namespace NuGet.VisualStudio
             _sourceRepositoryProvider = sourceRepositoryProvider;
             _settings = settings;
             _solutionManager = solutionManager;
-            _projectContext = new VSAPIProjectContext();
             _packageServices = packageServices;
             _deleteOnRestartManager = deleteOnRestartManager;
             PumpingJTF = new PumpingJTF(NuGetUIThreadHelper.JoinableTaskFactory.Context);
@@ -271,10 +270,14 @@ namespace NuGet.VisualStudio
             {
                 return msg =>
                     {
-                        if (_projectContext != null)
+                        // instead of initializing it in MEF constructor since it access ISourceControlManagerProvider
+                        // initializing it here so that it doesn't hang at MEF initialization.
+                        if (ProjectContext == null)
                         {
-                            _projectContext.Log(ProjectManagement.MessageLevel.Error, msg);
+                            ProjectContext = new VSAPIProjectContext();
                         }
+
+                        ProjectContext.Log(ProjectManagement.MessageLevel.Error, msg);
                     };
             }
         }
